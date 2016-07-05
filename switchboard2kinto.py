@@ -21,10 +21,10 @@ def push(client):
         experiments = json.loads(f.read())
 
     count = 0
-    client.create_collection('experiments',
-                             data=SCHEMA_V1['experiments']['config'],
-                             permissions={"read": ["system.Everyone"]},
-                             safe=False)
+    data = SCHEMA_V1['experiments']['config'].copy()
+    data['id'] = "experiment"
+    client.update_collection(data=SCHEMA_V1['experiments']['config'],
+                             permissions={"read": ["system.Everyone"]})
 
     kinto_experiments = {}
     for record in list(client.get_records()):
